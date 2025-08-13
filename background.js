@@ -37,10 +37,7 @@ async function updateCacheInAllTabs() {
                             extensionEnabled: enabled,
                             timestamp: Date.now()
                         }));
-
-                        console.log('[Canvas Privacy] Updated cache - sites:', sites, 'enabled:', enabled);
                     } catch (e) {
-                        console.error('[Canvas Privacy] Failed to update cache:', e);
                     }
                 },
                 args: [customSites, extensionEnabled],
@@ -48,11 +45,9 @@ async function updateCacheInAllTabs() {
             });
         } catch (e) {
             // Ignore injection errors for restricted pages
-            console.log(`[Canvas Privacy] Could not update cache in tab ${tab.id}:`, e.message);
         }
     }
 
-    console.log('[Canvas Privacy] Cache updated in all tabs');
 }
 
 // Check if URL is a Canvas site
@@ -149,7 +144,6 @@ async function injectGoogleWarning(tabId) {
             files: ['google-warning.js']
         });
     } catch (e) {
-        console.log('[Canvas Privacy] Could not inject Google warning:', e.message);
     }
 }
 
@@ -216,7 +210,6 @@ async function ensureCacheInTab(tabId) {
                         timestamp: Date.now()
                     }));
 
-                    console.log('[Canvas Privacy] Ensured cache is fresh - sites:', sites, 'enabled:', enabled);
                 } catch (e) {
                     console.error('[Canvas Privacy] Failed to ensure cache:', e);
                 }
@@ -353,7 +346,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 // Listen for storage changes
 chrome.storage.onChanged.addListener((changes, namespace) => {
     if (changes.customSites || changes.extensionEnabled) {
-        console.log('[Canvas Privacy] Settings changed, updating cache in all tabs');
         // Update cache in all tabs when custom sites or enabled state changes
         updateCacheInAllTabs();
     }
