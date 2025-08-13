@@ -1,10 +1,10 @@
-// Background script with localStorage cache management
+// Background script compatible with both Chrome and Firefox MV3
 
 // Update cache in all tabs when custom sites or settings change
 async function updateCacheInAllTabs() {
     const result = await chrome.storage.sync.get(['customSites', 'extensionEnabled']);
     const customSites = result.customSites || [];
-    const extensionEnabled = result.extensionEnabled !== false; // Default to enabled
+    const extensionEnabled = result.extensionEnabled !== false;
 
     // Get all tabs
     const tabs = await chrome.tabs.query({});
@@ -12,16 +12,17 @@ async function updateCacheInAllTabs() {
     for (const tab of tabs) {
         if (!tab.id || !tab.url) continue;
 
-        // Skip chrome:// and other restricted URLs
+        // Skip browser internal URLs
         if (tab.url.startsWith('chrome://') ||
             tab.url.startsWith('edge://') ||
             tab.url.startsWith('about:') ||
+            tab.url.startsWith('moz-extension://') ||
             tab.url.startsWith('chrome-extension://')) {
             continue;
         }
 
         try {
-            // Inject the cache update script
+            // Inject cache update script
             await chrome.scripting.executeScript({
                 target: { tabId: tab.id },
                 func: (sites, enabled) => {
@@ -32,27 +33,22 @@ async function updateCacheInAllTabs() {
                             timestamp: Date.now()
                         }));
 
-                        // Update settings cache (including enabled state)
+                        // Update settings cache
                         localStorage.setItem('canvas_privacy_settings', JSON.stringify({
                             extensionEnabled: enabled,
                             timestamp: Date.now()
                         }));
 
-                        console.log('[Canvas Privacy] Updated cache - sites:', sites, 'enabled:', enabled);
                     } catch (e) {
-                        console.error('[Canvas Privacy] Failed to update cache:', e);
                     }
                 },
                 args: [customSites, extensionEnabled],
                 world: 'MAIN'
             });
         } catch (e) {
-            // Ignore injection errors for restricted pages
-            console.log(`[Canvas Privacy] Could not update cache in tab ${tab.id}:`, e.message);
         }
     }
 
-    console.log('[Canvas Privacy] Cache updated in all tabs');
 }
 
 // Check if URL is a Canvas site
@@ -125,7 +121,7 @@ async function isProtectedSite(url) {
     // Check if extension is enabled
     const result = await chrome.storage.sync.get(['extensionEnabled']);
     if (result.extensionEnabled === false) {
-        return false; // Extension is disabled
+        return false;
     }
 
     const isCanvas = isCanvasSite(url);
@@ -138,10 +134,9 @@ async function isProtectedSite(url) {
 // Inject Google warning script
 async function injectGoogleWarning(tabId) {
     try {
-        // Check if extension is enabled
         const result = await chrome.storage.sync.get(['extensionEnabled']);
         if (result.extensionEnabled === false) {
-            return; // Don't inject if disabled
+            return;
         }
 
         await chrome.scripting.executeScript({
@@ -149,7 +144,6 @@ async function injectGoogleWarning(tabId) {
             files: ['google-warning.js']
         });
     } catch (e) {
-        console.log('[Canvas Privacy] Could not inject Google warning:', e.message);
     }
 }
 
@@ -159,16 +153,18 @@ async function updateBadgeForTab(tabId, url) {
         const isProtected = await isProtectedSite(url);
 
         if (isProtected) {
-            chrome.action.setBadgeText({
-                text: ' ',
+            // Set green badge
+            await chrome.action.setBadgeText({
+                text: '✓',
                 tabId: tabId
             });
-            chrome.action.setBadgeBackgroundColor({
+            await chrome.action.setBadgeBackgroundColor({
                 color: '#4CAF50',
                 tabId: tabId
             });
         } else {
-            chrome.action.setBadgeText({
+            // Clear badge
+            await chrome.action.setBadgeText({
                 text: '',
                 tabId: tabId
             });
@@ -196,7 +192,7 @@ async function ensureCacheInTab(tabId) {
                     if (cached && settingsCached) {
                         const data = JSON.parse(cached);
                         const settingsData = JSON.parse(settingsCached);
-                        // If cache is recent (less than 1 minute old) and has same data, skip update
+                        // If cache is recent and has same data, skip update
                         if (Date.now() - data.timestamp < 60000 &&
                             Date.now() - settingsData.timestamp < 60000 &&
                             JSON.stringify(data.sites) === JSON.stringify(sites) &&
@@ -216,9 +212,7 @@ async function ensureCacheInTab(tabId) {
                         timestamp: Date.now()
                     }));
 
-                    console.log('[Canvas Privacy] Ensured cache is fresh - sites:', sites, 'enabled:', enabled);
                 } catch (e) {
-                    console.error('[Canvas Privacy] Failed to ensure cache:', e);
                 }
             },
             args: [customSites, extensionEnabled],
@@ -233,13 +227,12 @@ async function ensureCacheInTab(tabId) {
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
     if (!tab.url) return;
 
-    // When URL changes, ensure cache is fresh before page loads
+    // Update badge whenever URL changes or page completes loading
     if (changeInfo.url) {
         await ensureCacheInTab(tabId);
         await updateBadgeForTab(tabId, tab.url);
     }
 
-    // Update badge and inject Google warning if needed
     if (changeInfo.status === 'complete') {
         await updateBadgeForTab(tabId, tab.url);
 
@@ -255,7 +248,6 @@ chrome.tabs.onActivated.addListener(async (activeInfo) => {
         const tab = await chrome.tabs.get(activeInfo.tabId);
         if (tab.url) {
             await updateBadgeForTab(tab.id, tab.url);
-            // Ensure cache is fresh when switching tabs
             await ensureCacheInTab(tab.id);
         }
     } catch (e) {
@@ -275,11 +267,11 @@ chrome.runtime.onInstalled.addListener(async (details) => {
         chrome.storage.sync.set({
             hasDisabledGoogleTracking: false,
             customSites: [],
-            extensionEnabled: true // Default to enabled
+            extensionEnabled: true
         });
     }
 
-    // Update cache in all tabs on install/update
+    // Update cache in all tabs
     await updateCacheInAllTabs();
 
     // Update all existing tabs
@@ -293,7 +285,6 @@ chrome.runtime.onInstalled.addListener(async (details) => {
 
 // Handle startup
 chrome.runtime.onStartup.addListener(async () => {
-    // Update cache in all tabs on browser startup
     await updateCacheInAllTabs();
 
     // Update all existing tabs
@@ -316,9 +307,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             url: chrome.runtime.getURL('welcome.html#google-instructions')
         });
     } else if (request.action === 'updateProtection') {
-        // Update cache in all tabs when settings change
         updateCacheInAllTabs().then(() => {
-            // Re-check all tabs
             chrome.tabs.query({}, async (tabs) => {
                 for (const tab of tabs) {
                     if (tab.id && tab.url) {
@@ -328,11 +317,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             });
         });
     } else if (request.action === 'toggleExtension') {
-        // Extension was toggled on/off
         chrome.storage.sync.set({ extensionEnabled: request.enabled }, () => {
-            // Update cache in all tabs
             updateCacheInAllTabs().then(() => {
-                // Update badges
                 chrome.tabs.query({}, async (tabs) => {
                     for (const tab of tabs) {
                         if (tab.id && tab.url) {
@@ -346,15 +332,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         isProtectedSite(request.url).then(isProtected => {
             sendResponse({ isProtected: isProtected });
         });
-        return true; // Keep the message channel open for async response
+        return true; // Keep message channel open
     }
 });
 
 // Listen for storage changes
 chrome.storage.onChanged.addListener((changes, namespace) => {
     if (changes.customSites || changes.extensionEnabled) {
-        console.log('[Canvas Privacy] Settings changed, updating cache in all tabs');
-        // Update cache in all tabs when custom sites or enabled state changes
         updateCacheInAllTabs();
     }
 });
