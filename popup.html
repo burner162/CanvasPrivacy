@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div class="popup-container">
+    <h2>Canvas Privacy Protection</h2>
+    <div class="status-section">
+      <h3>Protection Status</h3>
+      <div class="status-item">
+        <span id="canvasIndicator" class="status-indicator active"></span>
+        <span id="canvasStatus">Canvas tracking blocked</span>
+      </div>
+      <div id="customSitesStatus" style="display: none;">
+        <div class="status-item">
+          <span id="customIndicator" class="status-indicator active"></span>
+          <span id="customSitesCount">0 custom sites protected</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <h3>Google Docs/Slides Settings</h3>
+      <div class="setting-item">
+        <label class="checkbox-container">
+          <input type="checkbox" id="hasDisabledTracking">
+          <span class="checkmark"></span>
+        </label>
+        <span>I've disabled Google view history</span>
+      </div>
+
+      <p class="privacy-note">Check this after disabling view history in Google settings to stop seeing warning popups
+      </p>
+
+      <button id="openInstructions" class="settings-button">
+        View Instructions to Disable Tracking
+      </button>
+    </div>
+
+    <div class="settings-section" id="custom-sites-section">
+      <h3>Custom Websites</h3>
+      <!-- Current site section will be inserted here dynamically -->
+
+      <p class="section-description">Add websites where you want to block page visibility tracking.</p>
+
+      <div class="custom-sites-input">
+        <input type="text" id="newSiteInput" placeholder="example.com">
+        <button id="addSiteBtn" class="add-button">Add</button>
+      </div>
+      <p id="siteError" class="error-message" style="display:none;color:red;margin-top:5px;"></p>
+      <div id="customSitesList" class="custom-sites-list"></div>
+    </div>
+
+    <!-- Main Power Toggle -->
+    <div class="power-section">
+      <div class="power-toggle">
+        <label class="switch-container">
+          <input type="checkbox" id="extensionEnabled" checked>
+          <span class="switch-slider"></span>
+        </label>
+        <span id="powerStatus" class="power-status">Toggle Extension Globally</span>
+      </div>
+    </div>
+
+    <div class="info-section">
+      <h3>What's Being Blocked</h3>
+      <ul>
+        <li>Page visibility changes</li>
+        <li>Tab switching detection</li>
+        <li>Window focus/blur events</li>
+        <li>Page hide/show events</li>
+      </ul>
+    </div>
+
+    <div class="footer">
+      <p>Your Canvas activity appears normal while this extension is active.</p>
+      <p class="reload-message">Reload the page after making any changes for them to take effect.</p>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+
+</html>

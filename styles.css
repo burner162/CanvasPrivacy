@@ -1,0 +1,789 @@
+/* Variables for consistent styling */
+:root {
+  /* Colors */
+  --primary-blue: #4285f4;
+  --primary-blue-dark: #3367d6;
+  --success-green: #4CAF50;
+  --error-red: #d32f2f;
+  --light-gray: #eee;
+  --medium-gray: #ccc;
+  --dark-gray: #666;
+  --text-color-dark: #333;
+  --text-color-light: #888;
+  --bg-light: #f8f9fa;
+  --bg-lighter: #f0f0f0;
+  --bg-lightest: #e9ecef;
+  --border-color: #ddd;
+  --kofi-blue: #00b9fe;
+  --kofi-blue-dark: #0099cc;
+  --warning-bg: #fff3cd;
+  --warning-border: #ffeaa7;
+  --warning-text: #856404;
+  --info-bg: #f0f7ff;
+  --info-border: #d0e3ff;
+
+  /* Font Sizes - Base */
+  --font-size-base-sm: 12px;
+  /* Base small for welcome page */
+  --font-size-base-md: 14px;
+  /* Base medium for welcome page */
+  --font-size-base-lg: 16px;
+  /* Base large for welcome page */
+
+  /* Font Sizes - Popup Specific (Further reduced for no scroll) */
+  --popup-font-size-xxs: 9px;
+  --popup-font-size-xs: 10px;
+  --popup-font-size-sm: 11px;
+  --popup-font-size-md: 12px;
+  --popup-font-size-lg: 13px;
+
+  /* Headings - Popup */
+  --popup-font-size-h3: 12px;
+  /* Smallest for uppercase sub-headings */
+  --popup-font-size-h2: 16px;
+  /* Main popup title */
+
+  /* Headings - Welcome Page (unchanged) */
+  --welcome-font-size-h1: 38px;
+  --welcome-font-size-h2: 26px;
+  --welcome-font-size-h3: 20px;
+
+  /* Spacing - Popup Specific (Reduced for no scroll) */
+  --popup-spacing-xxs: 2px;
+  --popup-spacing-xs: 4px;
+  --popup-spacing-sm: 6px;
+  --popup-spacing-md: 8px;
+  --popup-spacing-lg: 10px;
+  /* Main section margin, general padding */
+  --popup-spacing-xl: 12px;
+  /* Popup container padding */
+
+  /* Spacing - General/Welcome Page (unchanged) */
+  --spacing-xxs: 4px;
+  /* Original spacing for other sections if needed */
+  --spacing-xs: 6px;
+  --spacing-sm: 8px;
+  --spacing-md: 10px;
+  --spacing-lg: 12px;
+  --spacing-xl: 16px;
+  --spacing-xxl: 20px;
+  --spacing-xxxl: 30px;
+  --spacing-huge: 40px;
+}
+
+/* Base styles with proper viewport handling */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  min-height: 100vh;
+}
+
+/* --- Popup Styles --- */
+.popup-container {
+  width: 380px;
+  padding: var(--popup-spacing-xl);
+  /* Reduced padding */
+  max-height: 600px;
+  /* A typical hard limit for extension popups, should fit without content scrolling */
+  overflow: hidden;
+  /* Ensure no scrollbars appear on the container */
+}
+
+/* Headings within Popup */
+.popup-container h2 {
+  margin: 0 0 var(--popup-spacing-lg) 0;
+  /* Reduced margin */
+  font-size: var(--popup-font-size-h2);
+  /* Reduced font size */
+  color: var(--text-color-dark);
+}
+
+.popup-container h3 {
+  margin: var(--popup-spacing-md) 0 var(--popup-spacing-sm) 0;
+  /* Reduced margins */
+  font-size: var(--popup-font-size-h3);
+  /* Reduced font size */
+  color: var(--dark-gray);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Status Section */
+.status-section {
+  margin-bottom: var(--popup-spacing-lg);
+  /* Reduced margin */
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  margin: var(--popup-spacing-xs) 0;
+  /* Reduced margin */
+  font-size: var(--popup-font-size-md);
+  /* Reduced font size */
+}
+
+.status-indicator {
+  width: auto;
+  /* Remove fixed size */
+  height: auto;
+  /* Remove fixed size */
+  border-radius: 0;
+  /* Remove circle shape */
+  margin-right: var(--popup-spacing-sm);
+  font-weight: bold;
+  font-size: 16px;
+  /* Bigger so check/X is visible */
+  line-height: 1;
+  flex-shrink: 0;
+  display: inline-block;
+  user-select: none;
+  background-color: transparent;
+  /* No background */
+  box-shadow: none;
+  /* Remove shadow */
+  color: var(--medium-gray);
+  /* Default neutral color */
+}
+
+.status-indicator.active {
+  /* You can remove this if you handle colors with JS textContent */
+  background-color: transparent;
+  box-shadow: none;
+  color: var(--success-green);
+}
+
+
+/* Settings Section */
+.settings-section {
+  margin-bottom: var(--popup-spacing-lg);
+  /* Reduced margin */
+  padding-bottom: var(--popup-spacing-lg);
+  /* Reduced padding */
+  border-bottom: 1px solid var(--light-gray);
+}
+
+.setting-item {
+  display: flex;
+  align-items: center;
+  margin: var(--popup-spacing-md) 0;
+  /* Reduced margin */
+  font-size: var(--popup-font-size-md);
+  /* Reduced font size */
+}
+
+/* Current Site Section */
+.current-site-section {
+  margin-bottom: var(--popup-spacing-lg);
+  padding: var(--popup-spacing-xl);
+  background: var(--info-bg);
+  border-radius: 6px;
+  border: 1px solid var(--info-border);
+}
+
+.current-site-section button {
+  width: 100%;
+  padding: var(--popup-spacing-md);
+  background: var(--primary-blue);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: var(--popup-font-size-lg);
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.current-site-section button:hover {
+  background-color: var(--primary-blue-dark);
+}
+
+/* Toggle Switch (Adjusted for smaller overall size) */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 32px;
+  /* Slightly reduced width */
+  height: 18px;
+  /* Slightly reduced height */
+  margin-right: var(--popup-spacing-md);
+  /* Reduced margin */
+  flex-shrink: 0;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--medium-gray);
+  transition: 0.4s;
+  border-radius: 18px;
+  /* Adjusted to new height */
+}
+
+.slider::before {
+  position: absolute;
+  content: "";
+  height: 12px;
+  /* Adjusted for new slider height */
+  width: 12px;
+  /* Adjusted for new slider height */
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked+.slider {
+  background-color: var(--primary-blue);
+}
+
+input:checked+.slider::before {
+  transform: translateX(14px);
+  /* Adjusted for new width */
+}
+
+/* Checkbox Styles (Adjusted for smaller overall size) */
+.checkbox-container {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  font-size: var(--popup-font-size-md);
+  /* Reduced font size */
+  user-select: none;
+}
+
+.checkbox-container input {
+  position: relative;
+  opacity: 0;
+  cursor: pointer;
+  height: 14px;
+  /* Reduced height */
+  width: 14px;
+  /* Reduced width */
+  margin: 0;
+  margin-right: var(--popup-spacing-sm);
+  /* Reduced margin */
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 14px;
+  /* Reduced height */
+  width: 14px;
+  /* Reduced width */
+  background-color: var(--light-gray);
+  border: 1px solid var(--medium-gray);
+  border-radius: 3px;
+  pointer-events: none;
+}
+
+.checkbox-container:hover input~.checkmark {
+  background-color: var(--bg-lighter);
+}
+
+.checkbox-container input:checked~.checkmark {
+  background-color: var(--primary-blue);
+  border-color: var(--primary-blue);
+}
+
+.checkmark::after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.checkbox-container input:checked~.checkmark::after {
+  display: block;
+}
+
+.checkbox-container .checkmark::after {
+  left: 4px;
+  /* Adjusted for smaller size */
+  top: 1px;
+  /* Adjusted for smaller size */
+  width: 4px;
+  height: 7px;
+  /* Adjusted for smaller size */
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* Other Popup Elements */
+.privacy-note {
+  font-size: var(--popup-font-size-xs);
+  /* Reduced font size */
+  color: var(--text-color-light);
+  margin: var(--popup-spacing-xxs) 0 var(--popup-spacing-sm) 0;
+  /* Reduced margins */
+  font-style: italic;
+  line-height: 1.3;
+}
+
+.settings-button {
+  width: 100%;
+  /* Target button for matching width */
+  padding: var(--popup-spacing-sm);
+  /* Reduced padding */
+  background-color: var(--primary-blue);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: var(--popup-font-size-md);
+  /* Reduced font size */
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.settings-button:hover {
+  background-color: var(--primary-blue-dark);
+}
+
+.info-section ul {
+  margin: var(--popup-spacing-sm) 0;
+  /* Reduced margin */
+  padding-left: 15px;
+  /* Reduced padding */
+}
+
+.info-section li {
+  margin: 2px 0;
+  /* Reduced margin */
+  font-size: var(--popup-font-size-sm);
+  /* Reduced font size */
+  color: var(--dark-gray);
+  line-height: 1.3;
+}
+
+.footer {
+  margin-top: var(--popup-spacing-lg);
+  /* Reduced margin */
+  padding-top: var(--popup-spacing-lg);
+  /* Reduced padding */
+  border-top: 1px solid var(--light-gray);
+}
+
+.footer p {
+  margin: 0;
+  font-size: var(--popup-font-size-xs);
+  /* Reduced font size */
+  color: var(--text-color-light);
+  line-height: 1.3;
+}
+
+/* Custom Sites Section */
+.section-description {
+  font-size: var(--popup-font-size-sm);
+  /* Reduced font size */
+  color: var(--dark-gray);
+  margin: 0 0 var(--popup-spacing-sm) 0;
+  /* Reduced margin */
+  line-height: 1.3;
+}
+
+.custom-sites-input {
+  display: flex;
+  gap: var(--popup-spacing-sm);
+  /* Reduced gap */
+  margin-bottom: var(--popup-spacing-md);
+  /* Reduced margin */
+}
+
+#newSiteInput {
+  flex: 1;
+  padding: var(--popup-spacing-xs) var(--popup-spacing-md);
+  /* Reduced padding */
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: var(--popup-font-size-sm);
+  /* Reduced font size */
+  font-family: inherit;
+}
+
+#newSiteInput:focus {
+  outline: none;
+  border-color: var(--primary-blue);
+}
+
+.add-button {
+  padding: var(--popup-spacing-xs) 10px;
+  /* Reduced padding */
+  background-color: var(--primary-blue);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: var(--popup-font-size-sm);
+  /* Reduced font size */
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.add-button:hover {
+  background-color: var(--primary-blue-dark);
+}
+
+.custom-sites-list {
+  max-height: 80px;
+  /* Further reduced max-height for this specific list */
+  overflow-y: auto;
+  /* Keep internal scrolling for the list itself */
+}
+
+.no-sites {
+  font-size: var(--popup-font-size-xs);
+  /* Reduced font size */
+  color: #999;
+  text-align: center;
+  padding: var(--popup-spacing-sm) 0;
+  /* Reduced padding */
+  margin: 0;
+}
+
+.custom-site-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--popup-spacing-xs) var(--popup-spacing-md);
+  /* Reduced padding */
+  background: var(--bg-light);
+  border-radius: 4px;
+  margin-bottom: var(--popup-spacing-xxs);
+  /* Reduced margin */
+  font-size: var(--popup-font-size-sm);
+  /* Reduced font size */
+}
+
+.custom-site-item:hover {
+  background: var(--bg-lightest);
+}
+
+.remove-btn {
+  background: none;
+  border: none;
+  color: #dc3545;
+  font-size: var(--popup-font-size-lg);
+  /* Reduced font size */
+  cursor: pointer;
+  padding: 0;
+  width: 18px;
+  /* Slightly reduced size */
+  height: 18px;
+  /* Slightly reduced size */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  transition: all 0.2s;
+  line-height: 1;
+}
+
+.remove-btn:hover {
+  background: #dc3545;
+  color: white;
+}
+
+/* Scrollbar styling for custom sites list (Kept for internal list scrolling) */
+.custom-sites-list::-webkit-scrollbar {
+  width: 4px;
+  /* Slightly thinner scrollbar */
+}
+
+.custom-sites-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.custom-sites-list::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+.custom-sites-list::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* --- Welcome Page Styles with Responsive Design (Unchanged) --- */
+h2 {
+  margin: 0 0 var(--spacing-lg) 0;
+  font-size: var(--welcome-font-size-h2);
+  color: var(--text-color-dark);
+}
+
+h3 {
+  margin: var(--spacing-md) 0 var(--spacing-sm) 0;
+  font-size: var(--welcome-font-size-h3);
+  color: var(--dark-gray);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.welcome-container {
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
+  padding: var(--spacing-huge) var(--spacing-xxl);
+}
+
+.welcome-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.welcome-header h1 {
+  font-size: var(--welcome-font-size-h1);
+  color: var(--text-color-dark);
+  margin-bottom: var(--spacing-md);
+}
+
+.welcome-header p {
+  font-size: var(--spacing-xxl);
+  color: var(--dark-gray);
+}
+
+.section {
+  background: var(--bg-light);
+  border-radius: 10px;
+  padding: var(--spacing-xxxl);
+  margin-bottom: var(--spacing-xxxl);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.section h2 {
+  color: var(--text-color-dark);
+  margin-bottom: var(--spacing-xxl);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  font-size: var(--welcome-font-size-h2);
+}
+
+.step {
+  background: white;
+  padding: var(--spacing-xxl);
+  border-radius: 8px;
+  margin-bottom: 15px;
+  border-left: 4px solid var(--primary-blue);
+}
+
+.step h3 {
+  margin: 0 0 var(--spacing-md) 0;
+  color: var(--text-color-dark);
+  font-size: var(--welcome-font-size-h3);
+}
+
+.step p {
+  margin: var(--spacing-md) 0;
+  color: var(--dark-gray);
+  line-height: 1.6;
+}
+
+.code-block {
+  background: #f5f5f5;
+  padding: 15px;
+  border-radius: 5px;
+  font-family: 'Courier New', monospace;
+  margin: var(--spacing-md) 0;
+  border: 1px solid var(--border-color);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  font-size: var(--font-size-base-lg);
+}
+
+.button-container {
+  text-align: center;
+  margin: var(--spacing-xxxl) 0;
+}
+
+.action-button {
+  display: inline-block;
+  padding: var(--spacing-lg) var(--spacing-xxxl);
+  background-color: var(--primary-blue);
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: var(--font-size-xl);
+  font-weight: 500;
+  transition: background-color 0.3s;
+  margin: 0 var(--spacing-md);
+  border: none;
+  cursor: pointer;
+}
+
+.action-button:hover {
+  background-color: var(--primary-blue-dark);
+}
+
+.warning-box {
+  background: var(--warning-bg);
+  border: 1px solid var(--warning-border);
+  border-radius: 5px;
+  padding: 15px;
+  margin: var(--spacing-xxl) 0;
+  color: var(--warning-text);
+  word-wrap: break-word;
+}
+
+.success-indicator {
+  color: var(--success-green);
+  font-weight: bold;
+}
+
+/* Other Specific Elements */
+.error-message {
+  font-size: 0.85em;
+  color: var(--error-red);
+}
+
+.kofi-button {
+  background-color: var(--kofi-blue);
+  color: white;
+  padding: var(--popup-spacing-sm) var(--popup-spacing-lg);
+  /* Reduced padding */
+  border-radius: 4px;
+  font-weight: bold;
+  text-decoration: none;
+  display: inline-block;
+  /* Key changes for width */
+  width: 100%;
+  /* Make it take full width */
+  text-align: center;
+  /* Center the text inside the button */
+}
+
+.kofi-button:hover {
+  background-color: var(--kofi-blue-dark);
+}
+
+/* --- Responsive Adjustments (Unchanged) --- */
+@media (max-width: 768px) {
+  .welcome-container {
+    padding: var(--spacing-xxl) 15px;
+  }
+
+  .welcome-header h1 {
+    font-size: 30px;
+  }
+
+  .welcome-header p {
+    font-size: var(--font-size-xl);
+  }
+
+  .section {
+    padding: var(--spacing-xxl);
+    margin-bottom: var(--spacing-xxl);
+  }
+
+  .section h2 {
+    font-size: 22px;
+  }
+
+  .step {
+    padding: 15px;
+  }
+
+  .step h3 {
+    font-size: var(--font-size-xl);
+  }
+
+  .code-block {
+    padding: var(--spacing-md);
+    font-size: 15px;
+  }
+
+  .action-button {
+    padding: var(--spacing-md) var(--spacing-xxl);
+    font-size: var(--font-size-lg);
+    margin: 5px;
+  }
+
+  .warning-box {
+    padding: var(--spacing-lg);
+  }
+}
+
+.switch-container {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 18px;
+}
+
+.switch-container input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switch-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--light-gray);
+  /* light gray track when off */
+  transition: 0.4s;
+  border-radius: 18px;
+}
+
+.switch-slider:before {
+  position: absolute;
+  content: "";
+  height: 14px;
+  width: 14px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  /* knob is white for contrast */
+  transition: 0.4s;
+  border-radius: 50%;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+input:checked+.switch-slider {
+  background-color: var(--primary-blue);
+  /* blue track when on */
+}
+
+input:checked+.switch-slider:before {
+  transform: translateX(18px);
+}
+
+.power-status {
+  color: var(--text-color-dark);
+  font-weight: 500;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.reload-message {
+  color: black;
+  font-size: 12px;
+  margin-top: 6px;
+}

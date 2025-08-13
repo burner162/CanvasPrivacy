@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Canvas Privacy Protection</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Checkbox styles for welcome page */
+        .welcome-checkbox {
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .welcome-checkbox input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="welcome-container">
+        <div class="welcome-header">
+            <h1>🛡️ Canvas Privacy Protection</h1>
+        </div>
+        <div class="section">
+
+            <p>Despite Canvas's official documentation stating that, "Quiz logs
+                should not be used to validate academic integrity or identify
+                occurrences of cheating," instructors still falsely accuse many
+                honest students of cheating using this faulty data. This extension
+                blocks event listeners that Canvas uses to attempt to
+                detect when a user leaves a website or the page is minimized/loses focus.
+                This will not interfere with other Canvas functionality and logging or provide any
+                unfair academic advantage. Instructors can still see IP address, device identifiers,
+                how long a user spent on each question, and more.
+                <strong>For maximal privacy save all course materials locally!</strong> Canvas has an export course
+                feature!
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>✅ Canvas LMS Protection Active</h2>
+            <p>The following tracking methods are now blocked on all Canvas sites:</p>
+            <ul>
+                <li>Page visibility tracking (tab switching)</li>
+                <li>Window focus/blur detection</li>
+                <li>Page hide/show events</li>
+            </ul>
+            <p class="success-indicator">✓ Your Canvas activity will appear normal while protection is active</p>
+        </div>
+
+        <div class="section" id="google-instructions">
+            <h2>⚠️ Important: Google Docs/Slides View History</h2>
+            <p>On enterprise Google accounts, the owners of slides/docs/etc. can see when you accessed a page.
+                This functionality has been used to falsely accuse students of accessing materials during exams.
+                Having a browser tab open is not cheating! <em>Instructions below on how to disable this
+                    tracking!</em>
+            </p>
+            <div class="warning-box">
+                <strong>Manual Action Required:</strong> Document owners can see when you view their Docs, Sheets,
+                and
+                Slides unless you disable it in your account settings.
+            </div>
+
+            <div class="step">
+                <h3>Step 1: Access Activity Dashboard</h3>
+                <p>In any Google Doc or Slides document, go to <strong>Tools → Activity dashboard</strong></p>
+                <img src="screenshot-tools-menu.png" alt="Tools menu with Activity dashboard highlighted"
+                    style="max-width: 100%; height: auto; border-radius: 8px; margin: 15px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            </div>
+
+            <div class="step">
+                <h3>Step 2: Open Privacy Settings</h3>
+                <p>Once in the Activity dashboard, click on <strong>Privacy settings</strong> in the left sidebar
+                </p>
+            </div>
+
+            <div class="step">
+                <h3>Step 3: Disable Both View History Settings</h3>
+                <p>Turn OFF both toggles:</p>
+                <div class="code-block">
+                    <strong>Account setting:</strong><br>
+                    Show my view history for all Docs, Sheets and Slides files
+                </div>
+                <div class="code-block">
+                    <strong>Document setting:</strong><br>
+                    Show my view history for this document
+                </div>
+                <img src="screenshot-privacy-settings.png" alt="Privacy settings with both toggles highlighted"
+                    style="max-width: 100%; height: auto; border-radius: 8px; margin: 15px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <p><strong>Important:</strong> You must disable BOTH settings to prevent document owners from seeing
+                    your view history.</p>
+            </div>
+
+            <div class="step">
+                <h3>Step 4: Stop Warning Popups</h3>
+                <p>After completing the steps above, check this box to stop seeing warning popups on Google
+                    Docs/Slides:
+                </p>
+                <div style="margin: 15px 0;">
+                    <label class="welcome-checkbox">
+                        <input type="checkbox" id="confirmDisabled">
+                        <span>I have disabled both view history settings in Google</span>
+                    </label>
+                </div>
+                <p id="confirmMessage" style="display: none; color: #4CAF50; font-weight: bold; margin-top: 10px;">
+                    ✓ Great! You won't see warning popups anymore.
+                </p>
+                <p style="font-size: 13px; color: #666; margin-top: 10px;">
+                    <em>Note: This checkbox only controls whether you see warning popups. You must actually disable
+                        the
+                        settings in Google for true privacy protection.</em>
+                </p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📌 How to Use This Extension</h2>
+            <ul>
+                <li><strong>Canvas Protection:</strong> Automatic - no action needed</li>
+                <li><strong>Google Docs/Slides:</strong> You'll see a red warning banner when viewing documents</li>
+                <li><strong>Warning Toggle:</strong> You can turn off the Google warnings in the extension popup
+                </li>
+                <li><strong>Settings:</strong> Click the extension icon in your browser toolbar to access settings
+                </li>
+            </ul>
+        </div>
+        <div class="button-container">
+            <button id="closeWelcome" class="action-button">
+                Close this tab
+            </button>
+        </div>
+    </div>
+
+    <script src="welcome.js"></script>
+</body>
+
+</html>
