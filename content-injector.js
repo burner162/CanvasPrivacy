@@ -191,7 +191,6 @@
                 }
 
                 if (document.hidden !== false || document.visibilityState !== 'visible') {
-                    console.log('[Canvas Privacy] Reinforcing protection...');
                     overrideProperty(document, 'visibilityState', 'visible');
                     overrideProperty(document, 'hidden', false);
                 }
@@ -204,7 +203,6 @@
         // Also listen for storage updates to refresh cache
         window.addEventListener('storage', (e) => {
             if (e.key === 'canvas_privacy_sites' && e.newValue) {
-                console.log('[Canvas Privacy] Cache updated from another tab');
             }
         });
     })();
