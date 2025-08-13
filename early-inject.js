@@ -8,7 +8,6 @@
         if (settings) {
             const data = JSON.parse(settings);
             if (data.extensionEnabled === false) {
-                console.log('[Canvas Privacy] Extension is disabled, skipping protection');
                 return; // Exit immediately if extension is disabled
             }
         }
