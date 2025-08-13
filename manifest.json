@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Canvas Privacy Protection",
-  "version": "2.0.0",
+  "version": "4.2.0",
   "description": "Prevents Canvas LMS from tracking page visibility and warns about Google tracking analytics",
   "permissions": [
     "storage",
